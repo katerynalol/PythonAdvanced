@@ -4,8 +4,8 @@ from typing import Union
 from sqlalchemy import create_engine, select, or_, not_, and_, desc, func, alias
 from sqlalchemy.orm import sessionmaker, aliased, joinedload
 
-from sqlalchemy_lessons.lesson_2.db_connector import DBConnector
-from sqlalchemy_lessons.lesson_2.social_blogs_models import *
+from db_connector import DBConnector
+from social_blogs_models import *
 
 engine = create_engine(
     url="mysql+pymysql://ich1:ich1_password_ilovedbs@ich-edit.edu.itcareerhub.de:3306/social_blogs",
