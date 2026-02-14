@@ -7,6 +7,9 @@
 #
 # ЦЕЛЬ: Обеспечить типобезопасность и валидацию при передаче данных о минералах.
 
+from pydantic import BaseModel, ConfigDict
+from decimal import Decimal
+
 class MineralOutput(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
