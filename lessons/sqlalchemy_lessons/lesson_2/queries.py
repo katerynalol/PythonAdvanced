@@ -20,6 +20,7 @@ engine = create_engine(
 
 
 with DBConnector(engine) as session:
+    ...
     # CRUD operations
 
     # C (Create)
@@ -37,7 +38,7 @@ with DBConnector(engine) as session:
     #
     # print(user)
     #
-    # print(user.email)
+    # print(user.rating)
     # print(user.first_name)
     # print(user.created_at)
 
@@ -46,8 +47,8 @@ with DBConnector(engine) as session:
     #     select(User)  # SELECT * FROM `user`
     #     .where(User.role_id == 3) # WHERE role_id = 3
     # )
-    #
-    # # по умолчанию вернётся [Row(User()), Row(User()), ..., Row(User())]
+    # #
+    # # # по умолчанию вернётся [Row(User()), Row(User()), ..., Row(User())]
     # response = session.execute(all_authors).scalars() # -> [User(), User(), ..., User()]
     #
     # data = [
@@ -58,7 +59,6 @@ with DBConnector(engine) as session:
     #     }
     #     for user in response
     # ]
-    #
     #
     # print(data)
 
@@ -106,7 +106,7 @@ with DBConnector(engine) as session:
     #
     # for user in res:
     #     print(user)
-    #     # print(user.rating)
+    #     print(user.rating)
 
     # взять только авторов с рейтингом больше 6
 
@@ -240,22 +240,22 @@ with DBConnector(engine) as session:
 
     # получить пользователей и для каждого пользователя взять его новости
 
-    stmt = (
-        select(User)
-        .join(Role, Role.id == User.role_id) # подгружается только таблица Ролей для фильтрации
-        .outerjoin(User.news)  # Необязательный метод, может помочь в тех случаях, когда нужно получить только полный мэтч (Получить только тех юзеров, у которых есть хоть одна новость)
-        .options(joinedload(User.news))  # подгружает непосредственно САМИ НОВОСТИ
-        .where(Role.name == 'author')  # фильтруем только тех пользователей, у которых определённое имя роли
-    )
-
-    result = session.execute(stmt).unique().scalars()  # при присоединении новостей мы получаем данные в формате:
-    # [User1(..., News1), User1(..., News2), User1(News3)] то есть каждая новость содержит инфо о пользователе.
-    # из-за этого получаем много дубликатов. Чтобы их убрать, и запрос работал без ошибок -- добавляем к извлечению
-    # данных метод .unique(). Тогда мы получаем данные в формате [User1(News1, News2, News3, News4)]
-
-
-    for user in result:
-        print(user.last_name, user.role_id, user.news)
+    # stmt = (
+    #     select(User)
+    #     .join(Role, Role.id == User.role_id) # подгружается только таблица Ролей для фильтрации
+    #     .outerjoin(User.news)  # Необязательный метод, может помочь в тех случаях, когда нужно получить только полный мэтч (Получить только тех юзеров, у которых есть хоть одна новость)
+    #     .options(joinedload(User.news))  # подгружает непосредственно САМИ НОВОСТИ
+    #     .where(Role.name == 'author')  # фильтруем только тех пользователей, у которых определённое имя роли
+    # )
+    #
+    # result = session.execute(stmt).unique().scalars()  # при присоединении новостей мы получаем данные в формате:
+    # # [User1(..., News1), User1(..., News2), User1(News3)] то есть каждая новость содержит инфо о пользователе.
+    # # из-за этого получаем много дубликатов. Чтобы их убрать, и запрос работал без ошибок -- добавляем к извлечению
+    # # данных метод .unique(). Тогда мы получаем данные в формате [User1(News1, News2, News3, News4)]
+    #
+    #
+    # for user in result:
+    #     print(user.last_name, user.role_id, user.news)
 
 
 
